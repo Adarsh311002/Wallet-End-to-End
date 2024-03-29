@@ -1,13 +1,19 @@
-
+import { useState } from "react";
 import { BottomWarning } from "../components/BottomWarning";
 import { Button } from "../components/Button";
 import { Heading } from "../components/Heading";
 import { InputBox } from "../components/InputBox";
 import { SubHeading } from "../components/SubHeading";
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export const Signup = () => {
-
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   return (
     <div className="bg-slate-300 h-screen flex justify-center">
@@ -16,28 +22,49 @@ export const Signup = () => {
           <Heading label={"Sign up"} />
           <SubHeading label={"Enter your infromation to create an account"} />
           <InputBox
-            
+            onChange={(e) => {
+              setFirstName(e.target.value);
+            }}
             placeholder="John"
             label={"First Name"}
           />
           <InputBox
-          
+            onChange={(e) => {
+              setLastName(e.target.value);
+            }}
             placeholder="Doe"
             label={"Last Name"}
           />
           <InputBox
-            
-            placeholder="harkirat@gmail.com"
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+            placeholder="adarsh@gmail.com"
             label={"Email"}
           />
           <InputBox
-           
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
             placeholder="123456"
             label={"Password"}
           />
           <div className="pt-4">
             <Button
-             
+              onClick={async () => {
+                const response = await axios.post(
+                  "http://localhost:3000/api/v1/user/signup",
+                  {
+                    username,
+                    password,
+                    firstname,
+                    lastname,
+                  }
+                );
+                localStorage.setItem("token", response.data.token);
+                toast.success("login successful");
+                navigate("/dashboard");
+              }}
               label={"Sign up"}
             />
           </div>
