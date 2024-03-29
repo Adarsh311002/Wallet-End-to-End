@@ -61,7 +61,9 @@ export const Signup = () => {
                     lastname,
                   }
                 );
-               
+                localStorage.setItem("token", response.data.token);
+                toast.success("login successful");
+                navigate("/dashboard");
               }}
               label={"Sign up"}
             />
